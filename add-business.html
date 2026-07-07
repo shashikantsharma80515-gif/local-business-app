@@ -9,15 +9,15 @@
 
 <h1>Add New Business</h1>
 
-<input type="text" placeholder="Business Name"><br><br>
+<input type="text" id="businessName" placeholder="Business Name"><br><br>
 
-<input type="text" placeholder="Owner Name"><br><br>
+<input type="text" id="ownerName" placeholder="Owner Name"><br><br>
 
-<input type="tel" placeholder="Phone Number"><br><br>
+<input type="tel" id="phone" placeholder="Phone Number"><br><br>
 
-<input type="text" placeholder="Address"><br><br>
+<input type="text" id="address" placeholder="Address"><br><br>
 
-<select>
+<select id="category">
 <option>Medical</option>
 <option>Grocery</option>
 <option>Restaurant</option>
@@ -27,7 +27,9 @@
 
 <br><br>
 
-<button>Add Business</button>
+<button onclick="saveBusiness()">Add Business</button>
+
+<script src="add-business.js"></script>
 
 </body>
 </html>
