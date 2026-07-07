@@ -1,11 +1,3 @@
-<script>
-if (localStorage.getItem("loggedIn") !== "true") {
-    window.location.href = "index.html";
-}
-</script>
-if (localStorage.getItem("loggedIn") !== "true") {
-    window.location.href = "index.html";
-}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +7,7 @@ if (localStorage.getItem("loggedIn") !== "true") {
 
 <style>
 body{
-    font-family:Arial;
+    font-family: Arial, sans-serif;
     background:#f5f5f5;
     margin:0;
 }
@@ -43,25 +35,26 @@ button{
     border-radius:8px;
     background:#0d6efd;
     color:white;
+    cursor:pointer;
 }
 </style>
-
 </head>
 
 <body>
 
-    <h2>Welcome Admin 👋</h2>
-
-    <button onclick="logout()">Logout</button>
-
-    </body>
+<script>
+if(localStorage.getItem("loggedIn") !== "true"){
+    window.location.href = "admin.html";
+}
+</script>
 
 <header>
 <h1>Admin Dashboard</h1>
 </header>
 
 <div class="card">
-<h2>Business Management</h2>
+
+<h2>Welcome Admin 👋</h2>
 
 <button>📋 All Businesses</button>
 
@@ -69,19 +62,22 @@ button{
 
 <button>❌ Reject Business</button>
 
-<button>➕ Add Business</button>
-
-<button onclick="window.location.href='index.html'">🚪 Logout</button>
-
-    <button onclick="window.location.href='add-business.html'">
+<button onclick="window.location.href='add-business.html'">
 ➕ Add Business
 </button>
-    
+
+<button onclick="logout()">
+🚪 Logout
+</button>
+
 </div>
 
-</body>
-    <h2>Welcome <span id="user"></span> 👋</h2>
-</html>
 <script>
-document.getElementById("user").innerText = "Admin";
+function logout(){
+    localStorage.removeItem("loggedIn");
+    window.location.href="admin.html";
+}
 </script>
+
+</body>
+</html>
