@@ -11,6 +11,8 @@ function login() {
         window.location.href = "dashboard.html";
 
     } else {
+
         alert("Wrong Username or Password ❌");
+
     }
 }
