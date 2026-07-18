@@ -38,6 +38,7 @@ button{
     cursor:pointer;
 }
 </style>
+
 </head>
 
 <body>
@@ -46,21 +47,32 @@ button{
 if(localStorage.getItem("loggedIn") !== "true"){
     window.location.href = "admin.html";
 }
+
+function logout(){
+    localStorage.removeItem("loggedIn");
+    window.location.href = "admin.html";
+}
 </script>
 
 <header>
-<h1>Admin Dashboard</h1>
+<h1>📍 Admin Dashboard</h1>
 </header>
 
 <div class="card">
 
 <h2>Welcome Admin 👋</h2>
 
-<button>📋 All Businesses</button>
+<button onclick="window.location.href='all-businesses.html'">
+📋 All Businesses
+</button>
 
-<button>✅ Approve Business</button>
+<button>
+✅ Approve Business
+</button>
 
-<button>❌ Reject Business</button>
+<button>
+❌ Reject Business
+</button>
 
 <button onclick="window.location.href='add-business.html'">
 ➕ Add Business
