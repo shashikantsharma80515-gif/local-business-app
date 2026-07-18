@@ -1,23 +1,33 @@
-function saveBusiness() {
-    alert("Button Working ✅");
-}
-function saveBusiness() {
+let businesses = JSON.parse(localStorage.getItem("businesses")) || [];
 
-    let businessName = document.getElementById("businessName").value;
-    let ownerName = document.getElementById("ownerName").value;
-    let phone = document.getElementById("phone").value;
-    let address = document.getElementById("address").value;
-    let category = document.getElementById("category").value;
+let box = document.getElementById("businessList");
 
-    let business = {
-        businessName: businessName,
-        ownerName: ownerName,
-        phone: phone,
-        address: address,
-        category: category
-    };
+if (businesses.length === 0) {
+    box.innerHTML = "<h3>No Business Found 😔</h3>";
+} else {
 
-    localStorage.setItem("business", JSON.stringify(business));
+    let html = "";
 
-    alert("Business Saved Successfully ✅");
+    businesses.forEach(function(business) {
+
+        html += `
+        <div style="background:white;padding:15px;margin:15px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1);">
+
+        <h2>${business.businessName}</h2>
+
+        <p><b>Owner:</b> ${business.ownerName}</p>
+
+        <p><b>Phone:</b> ${business.phone}</p>
+
+        <p><b>Address:</b> ${business.address}</p>
+
+        <p><b>Category:</b> ${business.category}</p>
+
+        <hr>
+
+        </div>
+        `;
+    });
+
+    box.innerHTML = html;
 }
