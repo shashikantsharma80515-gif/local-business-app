@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Add Business</title>
-<link rel="stylesheet" href="style.css">
+    <title>Add Business</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-<button onclick="alert('Test OK')">Test Button</button>
+
 <h1>Add New Business</h1>
 
 <input type="text" id="businessName" placeholder="Business Name"><br><br>
@@ -18,18 +18,22 @@
 <input type="text" id="address" placeholder="Address"><br><br>
 
 <select id="category">
-<option>Medical</option>
-<option>Grocery</option>
-<option>Restaurant</option>
-<option>Salon</option>
-<option>Mobile Repair</option>
+    <option>Medical</option>
+    <option>Grocery</option>
+    <option>Restaurant</option>
+    <option>Salon</option>
+    <option>Mobile Repair</option>
 </select>
 
 <br><br>
 
-<button onclick="saveBusiness()">Add Business</button>
+<button id="addBtn">Add Business</button>
 
 <script src="add-business.js"></script>
+
+<script>
+document.getElementById("addBtn").addEventListener("click", saveBusiness);
+</script>
 
 </body>
 </html>
