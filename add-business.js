@@ -17,11 +17,11 @@ function saveBusiness() {
     }
 
     let business = {
-        businessName,
-        ownerName,
-        phone,
-        address,
-        category
+        businessName: businessName,
+        ownerName: ownerName,
+        phone: phone,
+        address: address,
+        category: category
     };
 
     let businesses = JSON.parse(localStorage.getItem("businesses")) || [];
@@ -30,8 +30,12 @@ function saveBusiness() {
 
     localStorage.setItem("businesses", JSON.stringify(businesses));
 
+    // Test
+    alert(localStorage.getItem("businesses"));
+
     alert("Business Saved Successfully ✅");
 
+    // Form Clear
     document.getElementById("businessName").value = "";
     document.getElementById("ownerName").value = "";
     document.getElementById("phone").value = "";
