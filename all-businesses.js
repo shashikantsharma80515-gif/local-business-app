@@ -1,47 +1,75 @@
 let businesses = JSON.parse(localStorage.getItem("businesses")) || [];
 
-let output = "";
+function displayBusinesses(list) {
 
-if (businesses.length === 0) {
-    output = "<h3>No Business Found 😔</h3>";
-} else {
+    let output = "";
 
-    businesses.forEach(function(business, index) {
+    if (list.length === 0) {
+        output = "<h3>No Business Found 😔</h3>";
+    } else {
 
-        output += `
-        <div style="background:white;padding:15px;margin:15px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1);">
+        list.forEach(function(business, index) {
 
-            <h2>${business.businessName}</h2>
+            if (!business.status) {
+                business.status = "Pending";
+            }
 
-            <p><b>Owner:</b> ${business.ownerName}</p>
+            output += `
+            <div style="background:white;padding:15px;margin:15px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1);">
 
-            <p><b>Phone:</b> ${business.phone}</p>
+                <h2>${business.businessName}</h2>
 
-            <p><b>Address:</b> ${business.address}</p>
+                <p><b>Owner:</b> ${business.ownerName}</p>
 
-            <p><b>Category:</b> ${business.category}</p>
+                <p><b>Phone:</b> ${business.phone}</p>
 
-            <button onclick="deleteBusiness(${index})">
-                🗑 Delete
-            </button>
+                <p><b>Address:</b> ${business.address}</p>
 
-        </div>
-        `;
-    });
+                <p><b>Category:</b> ${business.category}</p>
 
+                <p><b>Status:</b> ${business.status}</p>
+
+                <button onclick="approveBusiness(${index})">✅ Approve</button>
+
+                <button onclick="rejectBusiness(${index})">❌ Reject</button>
+
+                <button onclick="deleteBusiness(${index})">🗑 Delete</button>
+
+            </div>
+            `;
+        });
+    }
+
+    document.getElementById("businessList").innerHTML = output;
 }
 
-document.getElementById("businessList").innerHTML = output;
+displayBusinesses(businesses);
+
+function approveBusiness(index) {
+    businesses[index].status = "Approved";
+    localStorage.setItem("businesses", JSON.stringify(businesses));
+    displayBusinesses(businesses);
+}
+
+function rejectBusiness(index) {
+    businesses[index].status = "Rejected";
+    localStorage.setItem("businesses", JSON.stringify(businesses));
+    displayBusinesses(businesses);
+}
 
 function deleteBusiness(index) {
-
-    let businesses = JSON.parse(localStorage.getItem("businesses")) || [];
-
     businesses.splice(index, 1);
-
     localStorage.setItem("businesses", JSON.stringify(businesses));
+    displayBusinesses(businesses);
+}
 
-    alert("Business Deleted ✅");
+function searchBusiness() {
+    let text = document.getElementById("search").value.toLowerCase();
 
-    location.reload();
+    let filtered = businesses.filter(function(business) {
+        return business.businessName.toLowerCase().includes(text) ||
+               business.category.toLowerCase().includes(text);
+    });
+
+    displayBusinesses(filtered);
 }
