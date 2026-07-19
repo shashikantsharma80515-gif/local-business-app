@@ -15,50 +15,22 @@
 <p>Find Local Businesses Near You</p>
 </header>
 
-  <a href="admin.html">
-  <button>🔐 Admin Login</button>
-  </a>
+<a href="admin.html">
+    <button>🔐 Admin Login</button>
+</a>
 
 <div class="search">
-<input type="text" placeholder="Search Business...">
+    <input
+        type="text"
+        id="search"
+        placeholder="🔍 Search Business..."
+        onkeyup="searchBusiness()">
 </div>
 
-<div class="categories">
-  <div class="business">
+<h2 style="padding:15px;">📋 Local Businesses</h2>
 
-<h2>shivansh Medical Store</h2>
+<div id="businessList"></div>
 
-<p>📍 Sarmera Bazaar</p>
-
-<a href="tel:9876543210">
-<button>📞 Call</button>
-</a>
-
-<a href="https://wa.me/919876543210">
-<button>💬 WhatsApp</button>
-</a>
-
-  </div>
-<div class="box">🛒 Grocery</div>
-<div class="box">💊 Medical</div>
-<div class="box">🍽 Restaurant</div>
-<div class="box">💇 Salon</div>
-<div class="box">📱 Mobile Repair</div>
-<div class="box">🔧 Hardware</div>
-
-<div class="business">
-  <h2>Raju Grocery Store</h2>
-  <p>📍 Sarmera Bazaar</p>
-
-  <a href="tel:9876500000">
-    <button>📞 Call</button>
-  </a>
-
-  <a href="https://wa.me/919876500000">
-    <button>💬 WhatsApp</button>
-  </a>
-</div>
-</div>
 <script src="script.js"></script>
 
 </body>
