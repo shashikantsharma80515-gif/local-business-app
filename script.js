@@ -4,7 +4,7 @@ function showBusinesses(list) {
 
     let output = "";
 
-    list.forEach(function(business) {
+    list.forEach(function(business, index) {
 
         if (business.status === "Approved") {
 
@@ -15,13 +15,25 @@ function showBusinesses(list) {
 
                 <p><b>Owner:</b> ${business.ownerName}</p>
 
+                <p>📞 ${business.phone}</p>
+
                 <p>📍 ${business.address}</p>
 
                 <p>📂 ${business.category}</p>
 
+                <br>
+
+                <button onclick="viewBusiness(${index})">
+                    👀 View Details
+                </button>
+
+                <br><br>
+
                 <a href="tel:${business.phone}">
                     <button>📞 Call</button>
                 </a>
+
+                <br><br>
 
                 <a href="https://wa.me/91${business.phone}" target="_blank">
                     <button>💬 WhatsApp</button>
@@ -53,4 +65,9 @@ function searchBusiness() {
     });
 
     showBusinesses(filtered);
+}
+
+function viewBusiness(index) {
+    localStorage.setItem("selectedBusiness", index);
+    window.location.href = "business.html";
 }
