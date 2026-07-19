@@ -1,23 +1,56 @@
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("Welcome to Sarmera Business Hub!");
+let businesses = JSON.parse(localStorage.getItem("businesses")) || [];
 
-    const searchBox = document.querySelector("input");
+function showBusinesses(list) {
 
-    searchBox.addEventListener("keyup", function () {
-        console.log("Searching: " + searchBox.value);
+    let output = "";
+
+    list.forEach(function(business) {
+
+        if (business.status === "Approved") {
+
+            output += `
+            <div class="business" style="background:white;padding:15px;margin:15px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1);">
+
+                <h2>${business.businessName}</h2>
+
+                <p><b>Owner:</b> ${business.ownerName}</p>
+
+                <p>📍 ${business.address}</p>
+
+                <p>📂 ${business.category}</p>
+
+                <a href="tel:${business.phone}">
+                    <button>📞 Call</button>
+                </a>
+
+                <a href="https://wa.me/91${business.phone}" target="_blank">
+                    <button>💬 WhatsApp</button>
+                </a>
+
+            </div>
+            `;
+        }
     });
-});
-const searchInput = document.querySelector("input");
-const businesses = document.querySelectorAll(".business");
 
-searchInput.addEventListener("keyup", function () {
-  const value = searchInput.value.toLowerCase();
-
-  businesses.forEach(function (business) {
-    if (business.innerText.toLowerCase().includes(value)) {
-      business.style.display = "block";
-    } else {
-      business.style.display = "none";
+    if (output === "") {
+        output = "<h3 style='padding:15px;'>No Approved Businesses Yet 😔</h3>";
     }
-  });
-});
+
+    document.getElementById("businessList").innerHTML = output;
+}
+
+showBusinesses(businesses);
+
+function searchBusiness() {
+
+    let text = document.getElementById("search").value.toLowerCase();
+
+    let filtered = businesses.filter(function(business) {
+
+        return business.businessName.toLowerCase().includes(text) ||
+               business.category.toLowerCase().includes(text);
+
+    });
+
+    showBusinesses(filtered);
+}
