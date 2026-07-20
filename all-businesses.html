@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,9 +11,9 @@
 
 <style>
 body{
+    margin:0;
     font-family:Arial,sans-serif;
     background:#f5f5f5;
-    margin:0;
 }
 
 header{
@@ -29,8 +30,9 @@ header{
 #search{
     width:100%;
     padding:12px;
-    border-radius:10px;
     border:1px solid #ccc;
+    border-radius:10px;
+    font-size:16px;
     box-sizing:border-box;
 }
 
@@ -45,7 +47,7 @@ header{
 
 <header>
 <h1>📋 All Businesses</h1>
-<p>Manage All Business Requests</p>
+<p>Manage All Businesses</p>
 </header>
 
 <div class="search">
@@ -58,9 +60,12 @@ onkeyup="searchBusiness()">
 
 </div>
 
-<div id="businessList"></div>
+<div id="businessList">
+
+</div>
 
 <script src="all-businesses.js"></script>
 
 </body>
+
 </html>
