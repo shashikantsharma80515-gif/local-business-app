@@ -5,17 +5,17 @@ function displayBusinesses(list) {
     let output = "";
 
     if (list.length === 0) {
-        output = "<h3>No Business Found 😔</h3>";
+        output = "<h3 style='text-align:center;'>No Business Found 😔</h3>";
     } else {
 
-        list.forEach(function(business, index) {
+        list.forEach(function (business, index) {
 
             if (!business.status) {
                 business.status = "Pending";
             }
 
             output += `
-            <div style="background:white;padding:15px;margin:15px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1);">
+            <div style="background:#fff;padding:15px;margin:15px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1);">
 
                 <h2>${business.businessName}</h2>
 
@@ -38,6 +38,7 @@ function displayBusinesses(list) {
             </div>
             `;
         });
+
     }
 
     document.getElementById("businessList").innerHTML = output;
@@ -46,30 +47,54 @@ function displayBusinesses(list) {
 displayBusinesses(businesses);
 
 function approveBusiness(index) {
+
     businesses[index].status = "Approved";
+
     localStorage.setItem("businesses", JSON.stringify(businesses));
+
+    alert("Business Approved ✅");
+
     displayBusinesses(businesses);
 }
 
 function rejectBusiness(index) {
+
     businesses[index].status = "Rejected";
+
     localStorage.setItem("businesses", JSON.stringify(businesses));
+
+    alert("Business Rejected ❌");
+
     displayBusinesses(businesses);
 }
 
 function deleteBusiness(index) {
-    businesses.splice(index, 1);
-    localStorage.setItem("businesses", JSON.stringify(businesses));
-    displayBusinesses(businesses);
+
+    if (confirm("Delete this business?")) {
+
+        businesses.splice(index, 1);
+
+        localStorage.setItem("businesses", JSON.stringify(businesses));
+
+        alert("Business Deleted 🗑");
+
+        displayBusinesses(businesses);
+    }
 }
 
 function searchBusiness() {
+
     let text = document.getElementById("search").value.toLowerCase();
 
-    let filtered = businesses.filter(function(business) {
-        return business.businessName.toLowerCase().includes(text) ||
-               business.category.toLowerCase().includes(text);
+    let filtered = businesses.filter(function (business) {
+
+        return (
+            business.businessName.toLowerCase().includes(text) ||
+            business.category.toLowerCase().includes(text) ||
+            business.ownerName.toLowerCase().includes(text)
+        );
+
     });
 
     displayBusinesses(filtered);
-}
+        }
