@@ -1,6 +1,5 @@
 let businesses = JSON.parse(localStorage.getItem("businesses")) || [];
 
-// Count
 let total = businesses.length;
 let approved = 0;
 let pending = 0;
@@ -8,46 +7,38 @@ let rejected = 0;
 
 businesses.forEach(function(business){
 
-    if(!business.status){
-        pending++;
-    }
-    else if(business.status === "Approved"){
+    if (business.status === "Approved") {
         approved++;
-    }
-    else if(business.status === "Rejected"){
+    } else if (business.status === "Rejected") {
         rejected++;
-    }
-    else{
+    } else {
         pending++;
     }
 
 });
 
-// Show Stats
 document.getElementById("stats").innerHTML = `
-
 <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px;">
 
-<div style="background:#0d6efd;color:white;padding:18px;border-radius:12px;text-align:center;">
+<div style="background:#0d6efd;color:white;padding:18px;border-radius:15px;text-align:center;">
 <h2>${total}</h2>
-<p>Total</p>
+<p>📋 Total</p>
 </div>
 
-<div style="background:#198754;color:white;padding:18px;border-radius:12px;text-align:center;">
+<div style="background:#198754;color:white;padding:18px;border-radius:15px;text-align:center;">
 <h2>${approved}</h2>
-<p>Approved</p>
+<p>✅ Approved</p>
 </div>
 
-<div style="background:#ffc107;color:black;padding:18px;border-radius:12px;text-align:center;">
+<div style="background:#ffc107;color:black;padding:18px;border-radius:15px;text-align:center;">
 <h2>${pending}</h2>
-<p>Pending</p>
+<p>⏳ Pending</p>
 </div>
 
-<div style="background:#dc3545;color:white;padding:18px;border-radius:12px;text-align:center;">
+<div style="background:#dc3545;color:white;padding:18px;border-radius:15px;text-align:center;">
 <h2>${rejected}</h2>
-<p>Rejected</p>
+<p>❌ Rejected</p>
 </div>
 
 </div>
-
 `;
