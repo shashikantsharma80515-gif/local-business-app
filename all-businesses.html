@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="style.css">
 
 <style>
+
 body{
     margin:0;
     font-family:Arial,sans-serif;
@@ -39,6 +40,7 @@ header{
 #businessList{
     padding:15px;
 }
+
 </style>
 
 </head>
@@ -55,16 +57,13 @@ header{
 <input
 type="text"
 id="search"
-placeholder="🔍 Search Business..."
-onkeyup="searchBusiness()">
+placeholder="🔍 Search Business...">
 
 </div>
 
-<div id="businessList">
+<div id="businessList"></div>
 
-</div>
-
-<script src="all-businesses.js"></script>
+<script type="module" src="all-businesses.js"></script>
 
 </body>
 
