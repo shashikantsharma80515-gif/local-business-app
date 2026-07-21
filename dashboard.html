@@ -3,66 +3,111 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Admin Dashboard</title>
 
 <style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
 body{
-    font-family:Arial,sans-serif;
-    background:#f5f5f5;
-    margin:0;
+background:#eef3f8;
 }
 
 header{
-    background:#0d6efd;
-    color:white;
-    text-align:center;
-    padding:20px;
+background:linear-gradient(135deg,#0066ff,#00b4ff);
+color:white;
+padding:30px;
+text-align:center;
+border-bottom-left-radius:20px;
+border-bottom-right-radius:20px;
+box-shadow:0 4px 15px rgba(0,0,0,.2);
 }
 
-.card{
-    background:white;
-    margin:20px;
-    padding:20px;
-    border-radius:12px;
-    box-shadow:0 2px 10px rgba(0,0,0,.1);
+.container{
+padding:15px;
+max-width:600px;
+margin:auto;
 }
 
-h2{
-    text-align:center;
-    margin-bottom:15px;
+.welcome{
+background:white;
+padding:20px;
+border-radius:15px;
+text-align:center;
+box-shadow:0 3px 12px rgba(0,0,0,.1);
+margin-bottom:20px;
 }
 
-#stats{
-    margin-bottom:20px;
+.stats{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+margin-bottom:20px;
 }
 
-button{
-    width:100%;
-    padding:14px;
-    margin-top:10px;
-    border:none;
-    border-radius:8px;
-    background:#0d6efd;
-    color:white;
-    cursor:pointer;
-    font-size:16px;
-    font-weight:bold;
+.stat{
+background:white;
+padding:18px;
+border-radius:15px;
+text-align:center;
+box-shadow:0 3px 10px rgba(0,0,0,.1);
 }
 
-button:hover{
-    opacity:.9;
+.stat h2{
+font-size:28px;
+margin-bottom:5px;
 }
+
+.menu button{
+width:100%;
+padding:15px;
+margin-top:12px;
+font-size:16px;
+font-weight:bold;
+border:none;
+border-radius:12px;
+color:white;
+cursor:pointer;
+}
+
+.all{
+background:#0d6efd;
+}
+
+.add{
+background:#ff9800;
+}
+
+.logout{
+background:#dc3545;
+}
+
+.footer{
+text-align:center;
+margin-top:25px;
+color:#666;
+font-size:14px;
+}
+
 </style>
 
 <script>
-if(localStorage.getItem("loggedIn") !== "true"){
-    window.location.href = "admin.html";
+
+if(localStorage.getItem("loggedIn")!="true"){
+window.location.href="admin.html";
 }
 
 function logout(){
-    localStorage.removeItem("loggedIn");
-    window.location.href = "admin.html";
+localStorage.removeItem("loggedIn");
+window.location.href="admin.html";
 }
+
 </script>
 
 </head>
@@ -70,35 +115,51 @@ function logout(){
 <body>
 
 <header>
+
 <h1>📍 Sarmera Business Hub</h1>
-<p>Admin Dashboard</p>
+
+<p>Professional Admin Dashboard</p>
+
 </header>
 
-<div class="card">
+<div class="container">
 
-<h2>Welcome Admin 👋</h2>
+<div class="welcome">
 
-<div id="stats"></div>
+<h2>👋 Welcome Admin</h2>
 
-<button onclick="window.location.href='all-businesses.html'">
+<p>Manage Your Local Business Directory</p>
+
+</div>
+
+<div id="stats" class="stats">
+
+</div>
+
+<div class="menu">
+
+<button class="all"
+onclick="window.location.href='all-businesses.html'">
 📋 All Businesses
 </button>
 
-<button onclick="window.location.href='all-businesses.html'">
-✅ Approve Business
-</button>
-
-<button onclick="window.location.href='all-businesses.html'">
-❌ Reject Business
-</button>
-
-<button onclick="window.location.href='add-business.html'">
+<button class="all"
+onclick="window.location.href='add-business.html'">
 ➕ Add Business
 </button>
 
-<button onclick="logout()">
+<button class="logout"
+onclick="logout()">
 🚪 Logout
 </button>
+
+</div>
+
+<div class="footer">
+
+Version 2.0 • Sarmera Business Hub
+
+</div>
 
 </div>
 
