@@ -1,4 +1,7 @@
-function saveBusiness() {
+import { db } from "./firebase.js";
+import { collection, addDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+async function saveBusiness() {
 
     let businessName = document.getElementById("businessName").value.trim();
     let ownerName = document.getElementById("ownerName").value.trim();
@@ -6,25 +9,38 @@ function saveBusiness() {
     let address = document.getElementById("address").value.trim();
     let category = document.getElementById("category").value;
 
-    if (businessName === "" || ownerName === "" || phone === "" || address === "") {
+    if (
+        businessName === "" ||
+        ownerName === "" ||
+        phone === "" ||
+        address === ""
+    ) {
         alert("Please fill all fields!");
         return;
     }
 
-    let businesses = JSON.parse(localStorage.getItem("businesses")) || [];
+    try {
 
-    businesses.push({
-        businessName,
-        ownerName,
-        phone,
-        address,
-        category,
-        status: "Pending"
-    });
+        await addDoc(collection(db, "businesses"), {
+            businessName,
+            ownerName,
+            phone,
+            address,
+            category,
+            status: "Pending",
+            createdAt: new Date()
+        });
 
-    localStorage.setItem("businesses", JSON.stringify(businesses));
+        alert("Business Saved Successfully ✅");
 
-    alert("Business Saved Successfully ✅");
+        window.location.href = "all-businesses.html";
 
-    window.location.href = "all-businesses.html";
+    } catch (error) {
+
+        alert("Error: " + error.message);
+
+    }
+
 }
+
+document.getElementById("addBtn").addEventListener("click", saveBusiness);
