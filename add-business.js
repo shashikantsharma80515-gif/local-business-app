@@ -1,3 +1,32 @@
 function saveBusiness() {
-    alert("saveBusiness is working ✅");
+
+    let businessName = document.getElementById("businessName").value.trim();
+    let ownerName = document.getElementById("ownerName").value.trim();
+    let phone = document.getElementById("phone").value.trim();
+    let address = document.getElementById("address").value.trim();
+    let category = document.getElementById("category").value;
+
+    if (businessName === "" || ownerName === "" || phone === "" || address === "") {
+        alert("Please fill all fields!");
+        return;
+    }
+
+    let businesses = JSON.parse(localStorage.getItem("businesses")) || [];
+
+    let business = {
+        businessName: businessName,
+        ownerName: ownerName,
+        phone: phone,
+        address: address,
+        category: category,
+        status: "Pending"
+    };
+
+    businesses.push(business);
+
+    localStorage.setItem("businesses", JSON.stringify(businesses));
+
+    alert("Business Saved Successfully ✅");
+
+    window.location.href = "all-businesses.html";
 }
