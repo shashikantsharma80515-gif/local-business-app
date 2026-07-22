@@ -1,5 +1,9 @@
 import { db } from "./firebase.js";
-import { collection, addDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+import {
+  collection,
+  addDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 async function saveBusiness() {
 
@@ -19,16 +23,20 @@ async function saveBusiness() {
         return;
     }
 
+    const btn = document.getElementById("addBtn");
+    btn.disabled = true;
+    btn.innerText = "Saving...";
+
     try {
 
         await addDoc(collection(db, "businesses"), {
-            businessName,
-            ownerName,
-            phone,
-            address,
-            category,
+            businessName: businessName,
+            ownerName: ownerName,
+            phone: phone,
+            address: address,
+            category: category,
             status: "Pending",
-            createdAt: new Date()
+            createdAt: serverTimestamp()
         });
 
         alert("Business Saved Successfully ✅");
@@ -39,6 +47,8 @@ async function saveBusiness() {
 
         alert("Error: " + error.message);
 
+        btn.disabled = false;
+        btn.innerText = "➕ Add Business";
     }
 
 }
