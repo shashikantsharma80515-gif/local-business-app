@@ -1,100 +1,152 @@
-let businesses = JSON.parse(localStorage.getItem("businesses")) || [];
+import { db } from "./firebase.js";
+
+import {
+    collection,
+    getDocs,
+    query,
+    orderBy
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+let businesses = [];
+
+async function loadBusinesses() {
+
+    const q = query(
+        collection(db, "businesses"),
+        orderBy("createdAt", "desc")
+    );
+
+    const snapshot = await getDocs(q);
+
+    businesses = [];
+
+    snapshot.forEach((doc) => {
+
+        businesses.push({
+            id: doc.id,
+            ...doc.data()
+        });
+
+    });
+
+    displayBusinesses(businesses);
+
+}
 
 function displayBusinesses(list) {
 
     let output = "";
 
     if (list.length === 0) {
-        output = "<h3 style='text-align:center;'>No Business Found 😔</h3>";
+
+        output =
+        "<h3 style='text-align:center;'>No Business Found 😔</h3>";
+
     } else {
 
-        list.forEach(function (business, index) {
-
-            if (!business.status) {
-                business.status = "Pending";
-            }
+        list.forEach(function(business){
 
             output += `
-            <div style="background:#fff;padding:15px;margin:15px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1);">
 
-                <h2>${business.businessName}</h2>
+<div style="background:#fff;padding:15px;margin:15px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1);">
 
-                <p><b>Owner:</b> ${business.ownerName}</p>
+<h2>${business.businessName}</h2>
 
-                <p><b>Phone:</b> ${business.phone}</p>
+<p><b>Owner:</b> ${business.ownerName}</p>
 
-                <p><b>Address:</b> ${business.address}</p>
+<p><b>Phone:</b> ${business.phone}</p>
 
-                <p><b>Category:</b> ${business.category}</p>
+<p><b>Address:</b> ${business.address}</p>
 
-                <p><b>Status:</b> ${business.status}</p>
+<p><b>Category:</b> ${business.category}</p>
 
-                <button onclick="approveBusiness(${index})">✅ Approve</button>
+<p><b>Status:</b> ${business.status}</p>
 
-                <button onclick="rejectBusiness(${index})">❌ Reject</button>
+<button onclick="approveBusiness('${business.id}')">
+✅ Approve
+</button>
 
-                <button onclick="deleteBusiness(${index})">🗑 Delete</button>
+<button onclick="rejectBusiness('${business.id}')">
+❌ Reject
+</button>
 
-            </div>
-            `;
+<button onclick="deleteBusiness('${business.id}')">
+🗑 Delete
+</button>
+
+</div>
+
+`;
+
         });
 
     }
 
     document.getElementById("businessList").innerHTML = output;
+
 }
 
-displayBusinesses(businesses);
+function searchBusiness(){
 
-function approveBusiness(index) {
+    let text =
+    document.getElementById("search").value.toLowerCase();
 
-    businesses[index].status = "Approved";
+    let filtered = businesses.filter(function(business){
 
-    localStorage.setItem("businesses", JSON.stringify(businesses));
-
-    alert("Business Approved ✅");
-
-    displayBusinesses(businesses);
-}
-
-function rejectBusiness(index) {
-
-    businesses[index].status = "Rejected";
-
-    localStorage.setItem("businesses", JSON.stringify(businesses));
-
-    alert("Business Rejected ❌");
-
-    displayBusinesses(businesses);
-}
-
-function deleteBusiness(index) {
-
-    if (confirm("Delete this business?")) {
-
-        businesses.splice(index, 1);
-
-        localStorage.setItem("businesses", JSON.stringify(businesses));
-
-        alert("Business Deleted 🗑");
-
-        displayBusinesses(businesses);
-    }
-}
-
-function searchBusiness() {
-
-    let text = document.getElementById("search").value.toLowerCase();
-
-    let filtered = businesses.filter(function (business) {
-
-        return (
-            business.businessName.toLowerCase().includes(text) ||
-            business.category.toLowerCase().includes(text) ||
-            business.ownerName.toLowerCase().includes(text)
-        );
+        return business.businessName.toLowerCase().includes(text)
+        ||
+        business.ownerName.toLowerCase().includes(text)
+        ||
+        business.category.toLowerCase().includes(text);
 
     });
 
     displayBusinesses(filtered);
-        }
+
+}
+
+document
+.getElementById("search")
+.addEventListener("keyup", searchBusiness);
+
+loadBusinesses();
+import {
+    doc,
+    updateDoc,
+    deleteDoc
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+window.approveBusiness = async function(id){
+
+    await updateDoc(doc(db,"businesses",id),{
+        status:"Approved"
+    });
+
+    alert("Business Approved ✅");
+
+    loadBusinesses();
+}
+
+window.rejectBusiness = async function(id){
+
+    await updateDoc(doc(db,"businesses",id),{
+        status:"Rejected"
+    });
+
+    alert("Business Rejected ❌");
+
+    loadBusinesses();
+}
+
+window.deleteBusiness = async function(id){
+
+    if(confirm("Delete this business?")){
+
+        await deleteDoc(doc(db,"businesses",id));
+
+        alert("Business Deleted 🗑");
+
+        loadBusinesses();
+    }
+
+}
