@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,19 +52,6 @@ gap:12px;
 margin-bottom:20px;
 }
 
-.stat{
-background:white;
-padding:18px;
-border-radius:15px;
-text-align:center;
-box-shadow:0 3px 10px rgba(0,0,0,.1);
-}
-
-.stat h2{
-font-size:28px;
-margin-bottom:5px;
-}
-
 .menu button{
 width:100%;
 padding:15px;
@@ -74,6 +62,11 @@ border:none;
 border-radius:12px;
 color:white;
 cursor:pointer;
+transition:.3s;
+}
+
+.menu button:hover{
+transform:scale(1.02);
 }
 
 .all{
@@ -133,7 +126,6 @@ window.location.href="admin.html";
 </div>
 
 <div id="stats" class="stats">
-
 </div>
 
 <div class="menu">
@@ -143,7 +135,7 @@ onclick="window.location.href='all-businesses.html'">
 📋 All Businesses
 </button>
 
-<button class="all"
+<button class="add"
 onclick="window.location.href='add-business.html'">
 ➕ Add Business
 </button>
@@ -156,14 +148,12 @@ onclick="logout()">
 </div>
 
 <div class="footer">
-
 Version 2.0 • Sarmera Business Hub
-
 </div>
 
 </div>
 
-<script src="dashboard.js"></script>
+<script type="module" src="dashboard.js"></script>
 
 </body>
 </html>
