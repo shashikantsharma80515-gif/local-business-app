@@ -1,73 +1,97 @@
-let businesses = JSON.parse(localStorage.getItem("businesses")) || [];
+import { db } from "./firebase.js";
+
+import {
+  collection,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+let businesses = [];
+
+async function loadBusinesses() {
+
+  const snapshot = await getDocs(collection(db, "businesses"));
+
+  businesses = [];
+
+  snapshot.forEach((doc) => {
+    businesses.push({
+      id: doc.id,
+      ...doc.data()
+    });
+  });
+
+  showBusinesses(businesses);
+}
 
 function showBusinesses(list) {
 
-    let output = "";
+  let output = "";
 
-    list.forEach(function(business, index) {
+  list.forEach(function (business) {
 
-        if (business.status === "Approved") {
+    if (business.status === "Approved") {
 
-            output += `
-            <div class="business" style="background:white;padding:15px;margin:15px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1);">
+      output += `
+      <div class="business" style="background:white;padding:15px;margin:15px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1);">
 
-                <h2>${business.businessName}</h2>
+      <h2>${business.businessName}</h2>
 
-                <p><b>Owner:</b> ${business.ownerName}</p>
+      <p><b>Owner:</b> ${business.ownerName}</p>
 
-                <p>📞 ${business.phone}</p>
+      <p>📞 ${business.phone}</p>
 
-                <p>📍 ${business.address}</p>
+      <p>📍 ${business.address}</p>
 
-                <p>📂 ${business.category}</p>
+      <p>📂 ${business.category}</p>
 
-                <br>
+      <br>
 
-                <button onclick="viewBusiness(${index})">
-                    👀 View Details
-                </button>
+      <button onclick="viewBusiness('${business.id}')">
+      👀 View Details
+      </button>
 
-                <br><br>
+      <br><br>
 
-                <a href="tel:${business.phone}">
-                    <button>📞 Call</button>
-                </a>
+      <a href="tel:${business.phone}">
+      <button>📞 Call</button>
+      </a>
 
-                <br><br>
+      <br><br>
 
-                <a href="https://wa.me/91${business.phone}" target="_blank">
-                    <button>💬 WhatsApp</button>
-                </a>
+      <a href="https://wa.me/91${business.phone}" target="_blank">
+      <button>💬 WhatsApp</button>
+      </a>
 
-            </div>
-            `;
-        }
-    });
-
-    if (output === "") {
-        output = "<h3 style='padding:15px;'>No Approved Businesses Yet 😔</h3>";
+      </div>
+      `;
     }
 
-    document.getElementById("businessList").innerHTML = output;
-}
+  });
 
-showBusinesses(businesses);
+  if (output === "") {
+    output = "<h3 style='padding:15px;'>No Approved Businesses Yet 😔</h3>";
+  }
+
+  document.getElementById("businessList").innerHTML = output;
+}
 
 function searchBusiness() {
 
-    let text = document.getElementById("search").value.toLowerCase();
+  let text = document.getElementById("search").value.toLowerCase();
 
-    let filtered = businesses.filter(function(business) {
+  let filtered = businesses.filter(business =>
+    business.businessName.toLowerCase().includes(text) ||
+    business.category.toLowerCase().includes(text)
+  );
 
-        return business.businessName.toLowerCase().includes(text) ||
-               business.category.toLowerCase().includes(text);
-
-    });
-
-    showBusinesses(filtered);
+  showBusinesses(filtered);
 }
 
-function viewBusiness(index) {
-    localStorage.setItem("selectedBusiness", index);
-    window.location.href = "business.html";
+window.searchBusiness = searchBusiness;
+
+window.viewBusiness = function(id){
+  localStorage.setItem("selectedBusiness", id);
+  window.location.href = "business.html";
 }
+
+loadBusinesses();
