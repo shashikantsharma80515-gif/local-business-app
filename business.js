@@ -1,39 +1,77 @@
-let businesses = JSON.parse(localStorage.getItem("businesses")) || [];
+import { db } from "./firebase.js";
 
-let index = localStorage.getItem("selectedBusiness");
+import {
+    doc,
+    getDoc
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
-let business = businesses[index];
+async function loadBusiness() {
 
-if (!business) {
-    document.getElementById("businessDetails").innerHTML =
-        "<h2 style='padding:20px;'>Business Not Found 😔</h2>";
-} else {
+    const id = localStorage.getItem("selectedBusiness");
 
-    document.getElementById("businessDetails").innerHTML = `
-        <div style="background:white;padding:20px;margin:20px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.1);">
+    if (!id) {
 
-            <h2>${business.businessName}</h2>
+        document.getElementById("businessDetails").innerHTML =
+        "<h3 style='text-align:center;'>Business Not Found 😔</h3>";
 
-            <p><b>Owner:</b> ${business.ownerName}</p>
+        return;
+    }
 
-            <p><b>Phone:</b> ${business.phone}</p>
+    try {
 
-            <p><b>Address:</b> ${business.address}</p>
+        const docRef = doc(db, "businesses", id);
 
-            <p><b>Category:</b> ${business.category}</p>
+        const docSnap = await getDoc(docRef);
 
-            <br>
+        if (!docSnap.exists()) {
 
-            <a href="tel:${business.phone}">
-                <button>📞 Call</button>
-            </a>
+            document.getElementById("businessDetails").innerHTML =
+            "<h3 style='text-align:center;'>Business Not Found 😔</h3>";
 
-            <br><br>
+            return;
+        }
 
-            <a href="https://wa.me/91${business.phone}" target="_blank">
-                <button>💬 WhatsApp</button>
-            </a>
+        const business = docSnap.data();
+
+        document.getElementById("businessDetails").innerHTML = `
+
+        <div class="card">
+
+        <h2>${business.businessName}</h2>
+
+        <p><b>👤 Owner:</b> ${business.ownerName}</p>
+
+        <p><b>📞 Phone:</b> ${business.phone}</p>
+
+        <p><b>📍 Address:</b> ${business.address}</p>
+
+        <p><b>📂 Category:</b> ${business.category}</p>
+
+        <p><b>✅ Status:</b> ${business.status}</p>
+
+        <a href="tel:${business.phone}">
+        <button>📞 Call Now</button>
+        </a>
+
+        <a href="https://wa.me/91${business.phone}" target="_blank">
+        <button>💬 WhatsApp</button>
+        </a>
+
+        <button class="back" onclick="history.back()">
+        ⬅ Back
+        </button>
 
         </div>
-    `;
+
+        `;
+
+    } catch (error) {
+
+        document.getElementById("businessDetails").innerHTML =
+        "<h3 style='text-align:center;'>Error Loading Business ❌</h3>";
+
+    }
+
 }
+
+loadBusiness();
