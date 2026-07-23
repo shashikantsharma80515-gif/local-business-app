@@ -10,24 +10,19 @@ async function loadBusiness() {
     const id = localStorage.getItem("selectedBusiness");
 
     if (!id) {
-
         document.getElementById("businessDetails").innerHTML =
         "<h3 style='text-align:center;'>Business Not Found 😔</h3>";
-
         return;
     }
 
     try {
 
         const docRef = doc(db, "businesses", id);
-
         const docSnap = await getDoc(docRef);
 
         if (!docSnap.exists()) {
-
             document.getElementById("businessDetails").innerHTML =
             "<h3 style='text-align:center;'>Business Not Found 😔</h3>";
-
             return;
         }
 
@@ -37,15 +32,19 @@ async function loadBusiness() {
 
         <div class="card">
 
-        <h2>${business.businessName}</h2>
+        <h2>🏪 ${business.businessName}</h2>
 
         <p><b>👤 Owner:</b> ${business.ownerName}</p>
 
         <p><b>📞 Phone:</b> ${business.phone}</p>
 
+        <p><b>📧 Email:</b> ${business.email || "Not Available"}</p>
+
         <p><b>📍 Address:</b> ${business.address}</p>
 
         <p><b>📂 Category:</b> ${business.category}</p>
+
+        <p><b>📝 Description:</b><br>${business.description || "No Description"}</p>
 
         <p><b>✅ Status:</b> ${business.status}</p>
 
@@ -56,6 +55,22 @@ async function loadBusiness() {
         <a href="https://wa.me/91${business.phone}" target="_blank">
         <button>💬 WhatsApp</button>
         </a>
+
+        ${
+            business.mapLink
+            ? `<a href="${business.mapLink}" target="_blank">
+                 <button>🗺️ Open in Google Maps</button>
+               </a>`
+            : ""
+        }
+
+        ${
+            business.website
+            ? `<a href="${business.website}" target="_blank">
+                 <button>🌐 Visit Website</button>
+               </a>`
+            : ""
+        }
 
         <button class="back" onclick="history.back()">
         ⬅ Back
