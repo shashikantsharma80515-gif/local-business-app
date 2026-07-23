@@ -1,5 +1,5 @@
 import { db } from "./firebase.js";
-
+alert("JavaScript Loaded");
 import {
   collection,
   addDoc,
