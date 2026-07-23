@@ -22,7 +22,8 @@ async function saveBusiness() {
   let category = document.getElementById("category").value;
   let description = document.getElementById("description").value.trim();
 
-  let imageFile = document.getElementById("businessImage").files[0];
+  // HTML me id="photo" hai
+  let imageFile = document.getElementById("photo").files[0];
 
   if (
     businessName === "" ||
@@ -42,11 +43,9 @@ async function saveBusiness() {
 
     let imageUrl = "";
 
-    // Upload image to Cloudinary
     if (imageFile) {
 
       const formData = new FormData();
-
       formData.append("file", imageFile);
       formData.append("upload_preset", UPLOAD_PRESET);
 
@@ -59,6 +58,12 @@ async function saveBusiness() {
       );
 
       const data = await response.json();
+
+      console.log(data);
+
+      if (!response.ok) {
+        throw new Error(data.error.message);
+      }
 
       imageUrl = data.secure_url;
     }
@@ -90,6 +95,8 @@ async function saveBusiness() {
   } catch (error) {
 
     alert("Error: " + error.message);
+
+    console.error(error);
 
     btn.disabled = false;
     btn.innerText = "➕ Add Business";
