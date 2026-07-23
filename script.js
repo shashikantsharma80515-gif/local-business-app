@@ -49,6 +49,12 @@ function showBusinesses(list) {
 
 <h2>🏪 ${business.businessName}</h2>
 
+${
+business.image
+? `<img src="${business.image}" style="width:100%;height:220px;object-fit:cover;border-radius:10px;margin:10px 0;">`
+: ""
+}
+
 <p><b>👤 Owner:</b> ${business.ownerName}</p>
 
 <p><b>📞</b> ${business.phone}</p>
@@ -96,53 +102,3 @@ business.website
 </a>`
 : ""
 }
-
-</div>
-
-`;
-
-        }
-
-    });
-
-    if (output === "") {
-
-        output = "<h3 style='text-align:center;'>No Approved Businesses Yet 😔</h3>";
-
-    }
-
-    document.getElementById("businessList").innerHTML = output;
-
-}
-
-function searchBusiness() {
-
-    let text = document.getElementById("search").value.toLowerCase();
-
-    let filtered = businesses.filter(function(business){
-
-        return (
-            business.businessName.toLowerCase().includes(text) ||
-            business.ownerName.toLowerCase().includes(text) ||
-            business.category.toLowerCase().includes(text)
-        );
-
-    });
-
-    showBusinesses(filtered);
-
-}
-
-document
-.getElementById("search")
-.addEventListener("keyup", searchBusiness);
-
-window.viewBusiness = function(id){
-
-    localStorage.setItem("selectedBusiness", id);
-
-    window.location.href = "business.html";
-
-}
-
-loadBusinesses();
