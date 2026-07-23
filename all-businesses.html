@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -12,33 +13,52 @@
 <style>
 
 body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#f5f5f5;
+margin:0;
+font-family:Arial,sans-serif;
+background:#f5f5f5;
 }
 
 header{
-    background:#0d6efd;
-    color:white;
-    text-align:center;
-    padding:20px;
+background:#0d6efd;
+color:white;
+text-align:center;
+padding:20px;
 }
 
 .search{
-    padding:15px;
+padding:15px;
 }
 
 #search{
-    width:100%;
-    padding:12px;
-    border:1px solid #ccc;
-    border-radius:10px;
-    font-size:16px;
-    box-sizing:border-box;
+width:100%;
+padding:12px;
+border:1px solid #ccc;
+border-radius:10px;
+font-size:16px;
+box-sizing:border-box;
 }
 
 #businessList{
-    padding:15px;
+padding:15px;
+}
+
+.back{
+text-align:center;
+margin:15px;
+}
+
+.back button{
+background:#198754;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+font-size:16px;
+cursor:pointer;
+}
+
+.back button:hover{
+background:#157347;
 }
 
 </style>
@@ -48,8 +68,11 @@ header{
 <body>
 
 <header>
+
 <h1>📋 All Businesses</h1>
+
 <p>Manage All Businesses</p>
+
 </header>
 
 <div class="search">
@@ -57,11 +80,19 @@ header{
 <input
 type="text"
 id="search"
-placeholder="🔍 Search Business...">
+placeholder="🔍 Search Business">
 
 </div>
 
 <div id="businessList"></div>
+
+<div class="back">
+
+<button onclick="window.location.href='dashboard.html'">
+⬅ Back to Dashboard
+</button>
+
+</div>
 
 <script type="module" src="all-businesses.js"></script>
 
