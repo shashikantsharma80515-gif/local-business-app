@@ -12,18 +12,18 @@ const UPLOAD_PRESET = "sarmera_business";
 
 async function saveBusiness() {
 
-  let businessName = document.getElementById("businessName").value.trim();
-  let ownerName = document.getElementById("ownerName").value.trim();
-  let phone = document.getElementById("phone").value.trim();
-  let email = document.getElementById("email").value.trim();
-  let address = document.getElementById("address").value.trim();
-  let mapLink = document.getElementById("mapLink").value.trim();
-  let website = document.getElementById("website").value.trim();
-  let category = document.getElementById("category").value;
-  let description = document.getElementById("description").value.trim();
+  const businessName = document.getElementById("businessName").value.trim();
+  const ownerName = document.getElementById("ownerName").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const address = document.getElementById("address").value.trim();
+  const mapLink = document.getElementById("mapLink").value.trim();
+  const website = document.getElementById("website").value.trim();
+  const category = document.getElementById("category").value;
+  const description = document.getElementById("description").value.trim();
 
-  // HTML me id="photo" hai
-  let imageFile = document.getElementById("photo").files[0];
+  // HTML me id="businessImage" hai
+  const imageFile = document.getElementById("businessImage").files[0];
 
   if (
     businessName === "" ||
@@ -59,17 +59,14 @@ async function saveBusiness() {
 
       const data = await response.json();
 
-      console.log(data);
-
       if (!response.ok) {
-        throw new Error(data.error.message);
+        throw new Error(data.error?.message || "Image upload failed");
       }
 
       imageUrl = data.secure_url;
     }
 
     await addDoc(collection(db, "businesses"), {
-
       businessName,
       ownerName,
       phone,
@@ -79,13 +76,9 @@ async function saveBusiness() {
       website,
       category,
       description,
-
       image: imageUrl,
-
       status: "Pending",
-
       createdAt: serverTimestamp()
-
     });
 
     alert("Business Saved Successfully ✅");
