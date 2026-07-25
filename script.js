@@ -1,59 +1,57 @@
 import { db } from "./firebase.js";
 
 import {
-    collection,
-    getDocs
+  collection,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 let businesses = [];
 
 async function loadBusinesses() {
 
-    try {
+  try {
 
-        const snapshot = await getDocs(collection(db, "businesses"));
+    const snapshot = await getDocs(collection(db, "businesses"));
 
-        businesses = [];
+    businesses = [];
 
-        snapshot.forEach((doc) => {
+    snapshot.forEach((doc) => {
+      businesses.push({
+        id: doc.id,
+        ...doc.data()
+      });
+    });
 
-            businesses.push({
-                id: doc.id,
-                ...doc.data()
-            });
+    showBusinesses(businesses);
 
-        });
+  } catch (error) {
 
-        showBusinesses(businesses);
+    console.error(error);
 
-    } catch (error) {
+    document.getElementById("businessList").innerHTML =
+      "<h3 style='text-align:center;'>Error Loading Businesses ❌</h3>";
 
-        document.getElementById("businessList").innerHTML =
-        "<h3 style='text-align:center;'>Error Loading Businesses ❌</h3>";
-
-    }
+  }
 
 }
 
 function showBusinesses(list) {
 
-    let output = "";
+  let output = "";
 
-    list.forEach(function (business) {
+  list.forEach((business) => {
 
-        if (business.status === "Approved") {
+    if (business.status === "Approved") {
 
-            output += `
+      output += `
 
 <div class="business" style="background:white;padding:15px;margin:15px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.1);">
 
 <h2>🏪 ${business.businessName}</h2>
 
-${
-business.image
+${business.image
 ? `<img src="${business.image}" style="width:100%;height:220px;object-fit:cover;border-radius:10px;margin:10px 0;">`
-: ""
-}
+: ""}
 
 <p><b>👤 Owner:</b> ${business.ownerName}</p>
 
@@ -85,20 +83,64 @@ business.image
 <button>💬 WhatsApp</button>
 </a>
 
-${
-business.mapLink
+${business.mapLink
 ? `<br><br>
 <a href="${business.mapLink}" target="_blank">
 <button>🗺️ Google Maps</button>
 </a>`
-: ""
-}
+: ""}
 
-${
-business.website
+${business.website
 ? `<br><br>
 <a href="${business.website}" target="_blank">
 <button>🌐 Website</button>
 </a>`
-: ""
+: ""}
+
+</div>
+
+`;
+
+    }
+
+  });
+
+  if (output === "") {
+    output = "<h3 style='text-align:center;'>No Approved Businesses Yet 😔</h3>";
+  }
+
+  document.getElementById("businessList").innerHTML = output;
+
 }
+
+function searchBusiness() {
+
+  const text = document.getElementById("search").value.toLowerCase();
+
+  const filtered = businesses.filter((business) => {
+
+    return (
+      business.businessName.toLowerCase().includes(text) ||
+      business.ownerName.toLowerCase().includes(text) ||
+      business.category.toLowerCase().includes(text)
+    );
+
+  });
+
+  showBusinesses(filtered);
+
+}
+
+document
+  .getElementById("search")
+  .addEventListener("keyup", searchBusiness);
+
+window.viewBusiness = function(id) {
+
+  localStorage.setItem("selectedBusiness", id);
+
+  window.location.href = "business.html";
+
+}
+
+loadBusinesses();
