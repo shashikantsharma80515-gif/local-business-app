@@ -1,5 +1,7 @@
 import { db } from "./firebase.js";
+
 alert("JavaScript Loaded");
+
 import {
   collection,
   addDoc,
@@ -22,7 +24,6 @@ async function saveBusiness() {
   const category = document.getElementById("category").value;
   const description = document.getElementById("description").value.trim();
 
-  // HTML me id="businessImage" hai
   const imageFile = document.getElementById("businessImage").files[0];
 
   if (
@@ -59,11 +60,18 @@ async function saveBusiness() {
 
       const data = await response.json();
 
+      console.log(data);
+
+      // 👇 Debug popup
+      alert(JSON.stringify(data));
+
       if (!response.ok) {
-        throw new Error(data.error?.message || "Image upload failed");
+        throw new Error(data.error?.message || "Image Upload Failed");
       }
 
       imageUrl = data.secure_url;
+
+      alert("Image Uploaded Successfully ✅");
     }
 
     await addDoc(collection(db, "businesses"), {
@@ -87,14 +95,13 @@ async function saveBusiness() {
 
   } catch (error) {
 
-    alert("Error: " + error.message);
-
     console.error(error);
+
+    alert("ERROR:\n" + error.message);
 
     btn.disabled = false;
     btn.innerText = "➕ Add Business";
   }
-
 }
 
 document.getElementById("addBtn").addEventListener("click", saveBusiness);
