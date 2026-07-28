@@ -8,17 +8,16 @@ import {
 let businesses = [];
 
 async function loadBusinesses() {
-
   try {
 
     const snapshot = await getDocs(collection(db, "businesses"));
 
     businesses = [];
 
-    snapshot.forEach((doc) => {
+    snapshot.forEach((docSnap) => {
       businesses.push({
-        id: doc.id,
-        ...doc.data()
+        id: docSnap.id,
+        ...docSnap.data()
       });
     });
 
@@ -29,10 +28,9 @@ async function loadBusinesses() {
     console.error(error);
 
     document.getElementById("businessList").innerHTML =
-      "<h3 style='text-align:center;'>Error Loading Businesses ❌</h3>";
+      "<h3 style='text-align:center;color:red;'>Error Loading Businesses ❌</h3>";
 
   }
-
 }
 
 function showBusinesses(list) {
@@ -41,27 +39,27 @@ function showBusinesses(list) {
 
   list.forEach((business) => {
 
-    if (business.status === "Approved") {
+    if ((business.status || "").trim().toLowerCase() === "approved") {
 
       output += `
+<div class="business" style="background:#fff;padding:15px;margin:15px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.1);">
 
-<div class="business" style="background:white;padding:15px;margin:15px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.1);">
+<h2>🏪 ${business.businessName || ""}</h2>
 
-<h2>🏪 ${business.businessName}</h2>
+${business.image ? `
+<img src="${business.image}"
+style="width:100%;height:220px;object-fit:cover;border-radius:10px;margin:10px 0;">
+` : ""}
 
-${business.image
-? `<img src="${business.image}" style="width:100%;height:220px;object-fit:cover;border-radius:10px;margin:10px 0;">`
-: ""}
+<p><b>👤 Owner:</b> ${business.ownerName || ""}</p>
 
-<p><b>👤 Owner:</b> ${business.ownerName}</p>
-
-<p><b>📞</b> ${business.phone}</p>
+<p><b>📞</b> ${business.phone || ""}</p>
 
 <p><b>📧</b> ${business.email || "Not Available"}</p>
 
-<p><b>📍</b> ${business.address}</p>
+<p><b>📍</b> ${business.address || ""}</p>
 
-<p><b>📂</b> ${business.category}</p>
+<p><b>📂</b> ${business.category || ""}</p>
 
 <p><b>📝</b> ${business.description || "No Description"}</p>
 
@@ -83,22 +81,21 @@ ${business.image
 <button>💬 WhatsApp</button>
 </a>
 
-${business.mapLink
-? `<br><br>
+${business.mapLink ? `
+<br><br>
 <a href="${business.mapLink}" target="_blank">
 <button>🗺️ Google Maps</button>
-</a>`
-: ""}
+</a>
+` : ""}
 
-${business.website
-? `<br><br>
+${business.website ? `
+<br><br>
 <a href="${business.website}" target="_blank">
 <button>🌐 Website</button>
-</a>`
-: ""}
+</a>
+` : ""}
 
 </div>
-
 `;
 
     }
@@ -106,11 +103,10 @@ ${business.website
   });
 
   if (output === "") {
-    output = "<h3 style='text-align:center;'>No Approved Businesses Yet 😔</h3>";
+    output = "<h3 style='text-align:center;'>No Approved Businesses Found 😔</h3>";
   }
 
   document.getElementById("businessList").innerHTML = output;
-
 }
 
 function searchBusiness() {
@@ -120,9 +116,9 @@ function searchBusiness() {
   const filtered = businesses.filter((business) => {
 
     return (
-      business.businessName.toLowerCase().includes(text) ||
-      business.ownerName.toLowerCase().includes(text) ||
-      business.category.toLowerCase().includes(text)
+      (business.businessName || "").toLowerCase().includes(text) ||
+      (business.ownerName || "").toLowerCase().includes(text) ||
+      (business.category || "").toLowerCase().includes(text)
     );
 
   });
@@ -141,6 +137,6 @@ window.viewBusiness = function(id) {
 
   window.location.href = "business.html";
 
-}
+};
 
 loadBusinesses();
