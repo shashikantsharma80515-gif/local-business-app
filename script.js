@@ -1,5 +1,4 @@
 import { db } from "./firebase.js";
-
 import {
   collection,
   getDocs
@@ -24,89 +23,96 @@ async function loadBusinesses() {
     showBusinesses(businesses);
 
   } catch (error) {
-
     console.error(error);
-
     document.getElementById("businessList").innerHTML =
-      "<h3 style='text-align:center;color:red;'>Error Loading Businesses ❌</h3>";
-
+      "<h3>Error Loading Businesses ❌</h3>";
   }
 }
 
 function showBusinesses(list) {
 
-  let output = "";
+  const businessList = document.getElementById("businessList");
+  businessList.innerHTML = "";
 
-  list.forEach((business) => {
+  let approved = list.filter(
+    b => (b.status || "").trim().toLowerCase() === "approved"
+  );
 
-    if ((business.status || "").trim().toLowerCase() === "approved") {
+  if (approved.length === 0) {
+    businessList.innerHTML =
+      "<h3 style='text-align:center'>No Approved Businesses Yet 😔</h3>";
+    return;
+  }
 
-      output += `
-<div class="business" style="background:#fff;padding:15px;margin:15px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.1);">
+  approved.forEach((business) => {
 
-<h2>🏪 ${business.businessName || ""}</h2>
+    const div = document.createElement("div");
 
-${business.image ? `
-<img src="${business.image}"
-style="width:100%;height:220px;object-fit:cover;border-radius:10px;margin:10px 0;">
-` : ""}
+    div.className = "business";
 
-<p><b>👤 Owner:</b> ${business.ownerName || ""}</p>
+    div.style.background = "#fff";
+    div.style.padding = "15px";
+    div.style.margin = "15px";
+    div.style.borderRadius = "12px";
+    div.style.boxShadow = "0 2px 8px rgba(0,0,0,.1)";
 
-<p><b>📞</b> ${business.phone || ""}</p>
+    div.innerHTML = `
+      <h2>🏪 ${business.businessName || ""}</h2>
 
-<p><b>📧</b> ${business.email || "Not Available"}</p>
+      ${business.image ? `
+      <img src="${business.image}"
+      style="width:100%;height:220px;object-fit:cover;border-radius:10px;">
+      ` : ""}
 
-<p><b>📍</b> ${business.address || ""}</p>
+      <p><b>👤 Owner:</b> ${business.ownerName || ""}</p>
 
-<p><b>📂</b> ${business.category || ""}</p>
+      <p>📞 ${business.phone || ""}</p>
 
-<p><b>📝</b> ${business.description || "No Description"}</p>
+      <p>📧 ${business.email || "Not Available"}</p>
 
-<br>
+      <p>📍 ${business.address || ""}</p>
 
-<button onclick="viewBusiness('${business.id}')">
-👀 View Details
-</button>
+      <p>📂 ${business.category || ""}</p>
 
-<br><br>
+      <p>${business.description || ""}</p>
 
-<a href="tel:${business.phone}">
-<button>📞 Call</button>
-</a>
+      <button onclick="viewBusiness('${business.id}')">
+      👀 View Details
+      </button>
 
-<br><br>
+      <br><br>
 
-<a href="https://wa.me/91${business.phone}" target="_blank">
-<button>💬 WhatsApp</button>
-</a>
+      <a href="tel:${business.phone}">
+      <button>📞 Call</button>
+      </a>
 
-${business.mapLink ? `
-<br><br>
-<a href="${business.mapLink}" target="_blank">
-<button>🗺️ Google Maps</button>
-</a>
-` : ""}
+      <br><br>
 
-${business.website ? `
-<br><br>
-<a href="${business.website}" target="_blank">
-<button>🌐 Website</button>
-</a>
-` : ""}
+      <a href="https://wa.me/91${business.phone}" target="_blank">
+      <button>💬 WhatsApp</button>
+      </a>
+    `;
 
-</div>
-`;
-
+    if (business.mapLink) {
+      div.innerHTML += `
+      <br><br>
+      <a href="${business.mapLink}" target="_blank">
+      <button>🗺️ Google Maps</button>
+      </a>`;
     }
+
+    if (business.website) {
+      div.innerHTML += `
+      <br><br>
+      <a href="${business.website}" target="_blank">
+      <button>🌐 Website</button>
+      </a>`;
+    }
+
+    businessList.appendChild(div);
 
   });
 
-  if (output === "") {
-    output = "<h3 style='text-align:center;'>No Approved Businesses Found 😔</h3>";
-  }
-
-  document.getElementById("businessList").innerHTML = output;
 }
 
 function searchBusiness() {
@@ -127,16 +133,11 @@ function searchBusiness() {
 
 }
 
-document
-  .getElementById("search")
-  .addEventListener("keyup", searchBusiness);
+document.getElementById("search").addEventListener("keyup", searchBusiness);
 
 window.viewBusiness = function(id) {
-
   localStorage.setItem("selectedBusiness", id);
-
   window.location.href = "business.html";
-
 };
 
 loadBusinesses();
